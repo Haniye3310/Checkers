@@ -10,9 +10,13 @@ public class Board : MonoBehaviour
     Tile[,] tiles = new Tile[LENGTH, LENGTH];
     Piece beginPiece;
     Tile beginTile;
-    Tile deletedPiece;
+    UIManager uIManager;
+    public static PieceColor turn { get; private set; }
     void Start()
     {
+        uIManager = FindObjectOfType<UIManager>();
+        turn = PieceColor.Cream;
+        uIManager.SwitchTurn(PieceColor.Cream);
         CreateBoard();
         SetPieces();
     }
@@ -260,6 +264,7 @@ public class Board : MonoBehaviour
 
         WinBrown();
         WinCream();
+        SwitchTurn();
     }
 
     public void WinBrown() 
@@ -279,7 +284,7 @@ public class Board : MonoBehaviour
 
         if (counter == 0) 
         {
-            Debug.Log("Brown win");
+            uIManager.SetWinUI(PieceColor.Brown);
             Application.Quit();
         }
             
@@ -301,8 +306,8 @@ public class Board : MonoBehaviour
         }
 
         if (counter == 0) 
-        { 
-            Debug.Log("Cream win");
+        {
+            uIManager.SetWinUI(PieceColor.Brown);
             Application.Quit();
         }
     }
@@ -440,6 +445,21 @@ public class Board : MonoBehaviour
             }
             x = x + 1;
             y = y - 1;
+        }
+    }
+  
+    private void SwitchTurn() 
+    {
+        if (turn== PieceColor.Cream) 
+        {
+            turn = PieceColor.Brown;
+            uIManager.SwitchTurn(PieceColor.Brown);
+
+        }
+        else if (turn == PieceColor.Brown)
+        {
+            turn = PieceColor.Cream;
+            uIManager.SwitchTurn(PieceColor.Cream);
         }
     }
 }

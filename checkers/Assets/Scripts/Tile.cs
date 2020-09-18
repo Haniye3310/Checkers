@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
     Board board;
     Piece _piece = null;
     TileColor tileColor;
+    int turn =0;
     void Start() 
     {
         board = FindObjectOfType<Board>();
@@ -46,11 +47,15 @@ public class Tile : MonoBehaviour
    
     void OnMouseDown() 
     {
-        if (GetColor()==TileColor.Black && GetPiece()!=null || GetColor() == TileColor.Red && GetPiece() != null)
+        if ((GetColor() == TileColor.Black && GetPiece() != null) || (GetColor() == TileColor.Red && GetPiece() != null)) 
         {
+            if (Board.turn!=GetPiece().GetColor()) { return; }
+           
             board.RecognizeGoal((int)transform.position.x, (int)transform.position.y);
         }
-        else if(GetColor() == TileColor.Green)
+
+
+        if (GetColor() == TileColor.Green)
         {
             board.Move((int)transform.position.x, (int)transform.position.y);
         }
@@ -64,5 +69,12 @@ public class Tile : MonoBehaviour
     public TileColor GetColor() 
     {
         return tileColor;
+    }
+    void SwitchTurn() 
+    {
+        if (turn == 0)
+            turn = 1;
+        else if (turn == 1)
+            turn = 0;
     }
 }
