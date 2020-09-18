@@ -67,10 +67,31 @@ public class Board : MonoBehaviour
     {
         OffLight();
         HighLight(i, j);
-
     }
-     void HighLight(int i ,int j) 
+
+    bool IsPlayerPin(PieceColor pieceColor)
     {
+        bool ret = true;
+
+        for (int i = 0; i < LENGTH; i++)
+            for (int j = 0; j < LENGTH; j++)
+            {
+                if (tiles[i,j].GetPiece() == null) continue;
+                if (tiles[i,j].GetPiece().GetColor() != pieceColor) continue;
+
+                if (HighLight(i, j, true))
+                {
+                    ret = false;
+                    break;
+                }
+            }
+
+        return ret;
+    }
+
+    bool HighLight(int i ,int j, bool justCheck = false)
+    {
+        int greenCounter = 0;
         beginPiece = tiles[i,j].GetPiece();
         beginTile = tiles[i, j];
         if (!tiles[i, j].GetPiece().IsKing()) 
@@ -82,17 +103,23 @@ public class Board : MonoBehaviour
                     if (j + 1 > -1 && j + 1 < 8)
                     {
                         if (tiles[i - 1, j + 1].GetPiece() == null)
-                            tiles[i - 1, j + 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                        {
+                            if(!justCheck)
+                                tiles[i - 1, j + 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                            greenCounter++;
+                        }
                         else if (tiles[i - 1, j + 1].GetPiece() != null)
                         {
                             if (tiles[i - 1, j + 1].GetPiece().GetColor() == PieceColor.Cream)
                             {
                                 if (i - 2 > -1 && j + 2 < 8 && tiles[i - 2, j + 2].GetPiece() == null)
                                 {
-                                    tiles[i - 2, j + 2].GetComponent<Tile>().SetColor(TileColor.Green);
+                                    if (!justCheck)
+                                        tiles[i - 2, j + 2].GetComponent<Tile>().SetColor(TileColor.Green);
+                                    greenCounter++;
+                                    if (!justCheck)
+                                        tiles[i - 1, j + 1].SetColor(TileColor.Red);
 
-                                    tiles[i - 1, j + 1].SetColor(TileColor.Red);
-                                 
 
                                 }
                             }
@@ -105,16 +132,23 @@ public class Board : MonoBehaviour
                     if (j + 1 > -1 && j + 1 < 8)
                     {
                         if (tiles[i + 1, j + 1].GetPiece() == null)
-                            tiles[i + 1, j + 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                        {
+                            if (!justCheck)
+                                tiles[i + 1, j + 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                            greenCounter++;
+                        }
                         else if (tiles[i + 1, j + 1].GetPiece() != null)
                         {
                             if (tiles[i + 1, j + 1].GetPiece().GetColor() == PieceColor.Cream)
                             {
                                 if (i + 2 < 8 && j + 2 < 8 && tiles[i + 2, j + 2].GetPiece() == null)
                                 {
-                                    tiles[i + 2, j + 2].GetComponent<Tile>().SetColor(TileColor.Green);
-                                    tiles[i + 1, j + 1].SetColor(TileColor.Red);
-                                    
+                                    if (!justCheck)
+                                        tiles[i + 2, j + 2].GetComponent<Tile>().SetColor(TileColor.Green);
+                                    greenCounter++;
+                                    if (!justCheck)
+                                        tiles[i + 1, j + 1].SetColor(TileColor.Red);
+
 
                                 }
                             }
@@ -130,16 +164,23 @@ public class Board : MonoBehaviour
                     if (j - 1 > -1 && j - 1 < 8)
                     {
                         if (tiles[i - 1, j - 1].GetPiece() == null)
-                            tiles[i - 1, j - 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                        {
+                            if (!justCheck)
+                                tiles[i - 1, j - 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                            greenCounter++;
+                        }
                         else if (tiles[i - 1, j - 1].GetPiece() != null)
                         {
                             if (tiles[i - 1, j - 1].GetPiece().GetColor() == PieceColor.Brown)
                             {
                                 if (i - 2 > -1 && j - 2 > -1 && tiles[i - 2, j - 2].GetPiece() == null)
                                 {
-                                    tiles[i - 2, j - 2].GetComponent<Tile>().SetColor(TileColor.Green);
-                                    tiles[i - 1, j - 1].SetColor(TileColor.Red);
-                                   
+                                    if (!justCheck)
+                                        tiles[i - 2, j - 2].GetComponent<Tile>().SetColor(TileColor.Green);
+                                    greenCounter++;
+                                    if (!justCheck)
+                                        tiles[i - 1, j - 1].SetColor(TileColor.Red);
+
 
                                 }
                             }
@@ -151,16 +192,22 @@ public class Board : MonoBehaviour
                     if (j - 1 > -1 && j - 1 < 8)
                     {
                         if (tiles[i + 1, j - 1].GetPiece() == null)
-                            tiles[i + 1, j - 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                        {
+                            if (!justCheck)
+                                tiles[i + 1, j - 1].GetComponent<Tile>().SetColor(TileColor.Green);
+                            greenCounter++;
+                        }
                         else if (tiles[i + 1, j - 1].GetPiece() != null)
                         {
                             if (tiles[i + 1, j - 1].GetPiece().GetColor() == PieceColor.Brown)
                             {
                                 if (i + 2 < 8 && j - 2 > -1 && tiles[i + 2, j - 2].GetPiece() == null)
                                 {
-                                    tiles[i + 2, j - 2].GetComponent<Tile>().SetColor(TileColor.Green);
-                                    tiles[i + 1, j - 1].SetColor(TileColor.Red);
-                                   
+                                    if (!justCheck)
+                                        tiles[i + 2, j - 2].GetComponent<Tile>().SetColor(TileColor.Green);
+                                    greenCounter++;
+                                    if (!justCheck)
+                                        tiles[i + 1, j - 1].SetColor(TileColor.Red);
 
                                 }
                             }
@@ -168,13 +215,21 @@ public class Board : MonoBehaviour
                     }
                 }
             }
+            if(greenCounter == 0)
+            {
+                return false;
+            }else
+            {
+                return true;
+            }
         }
-       
 
         else if (tiles[i,j].GetPiece().IsKing()) 
         {
-            HighLightKing(i,j);
+            return HighLightKing(i, j, justCheck);
         }
+
+        return false;
 
     }
      void OffLight() 
@@ -285,7 +340,6 @@ public class Board : MonoBehaviour
         if (counter == 0) 
         {
             uIManager.SetWinUI(PieceColor.Brown);
-            Application.Quit();
         }
             
 
@@ -307,20 +361,22 @@ public class Board : MonoBehaviour
 
         if (counter == 0) 
         {
-            uIManager.SetWinUI(PieceColor.Brown);
-            Application.Quit();
+            uIManager.SetWinUI(PieceColor.Cream);
         }
     }
 
-    void HighLightKing(int i , int j) 
+    bool HighLightKing(int i , int j, bool justCheck = false) 
     {
+        int greenCounter = 0;
         int x = i+1;
         int y = j+1;
         while (x < 8 && x > -1 && y < 8 && y > -1 )
         {
             if (tiles[x, y].GetPiece() == null)
             {
-                tiles[x, y].SetColor(TileColor.Green);
+                if (!justCheck)
+                    tiles[x, y].SetColor(TileColor.Green);
+                greenCounter++;
             }
             if (tiles[x, y].GetPiece() != null) 
             {
@@ -340,7 +396,8 @@ public class Board : MonoBehaviour
                 }
                 if (tiles[x, y].GetPiece().GetColor() != tiles[i, j].GetPiece().GetColor() && x+1<8 && x + 1 > -1 && y + 1 < 8 && y + 1 > -1) 
                 {
-                    tiles[x, y].SetColor(TileColor.Red);
+                    if (!justCheck)
+                        tiles[x, y].SetColor(TileColor.Red);
                 }
                 
             }
@@ -353,7 +410,9 @@ public class Board : MonoBehaviour
         {
             if (tiles[x, y].GetPiece() == null)
             {
-                tiles[x, y].SetColor(TileColor.Green);
+                if (!justCheck)
+                    tiles[x, y].SetColor(TileColor.Green);
+                greenCounter++;
             }
             if (tiles[x, y].GetPiece() != null)
             {
@@ -373,7 +432,8 @@ public class Board : MonoBehaviour
                 }
                 if (tiles[x, y].GetPiece().GetColor() != tiles[i, j].GetPiece().GetColor() && x - 1 > -1 && y + 1 < 8 && y + 1 > -1&&x - 1 < 8)
                 {
-                    tiles[x, y].SetColor(TileColor.Red);
+                    if (!justCheck)
+                        tiles[x, y].SetColor(TileColor.Red);
                 }
 
             }
@@ -386,7 +446,9 @@ public class Board : MonoBehaviour
         {
             if (tiles[x, y].GetPiece() == null)
             {
-                tiles[x, y].SetColor(TileColor.Green);
+                if (!justCheck)
+                    tiles[x, y].SetColor(TileColor.Green);
+                greenCounter++;
             }
             if (tiles[x, y].GetPiece() != null)
             {
@@ -406,7 +468,8 @@ public class Board : MonoBehaviour
                 }
                 if (tiles[x, y].GetPiece().GetColor() != tiles[i, j].GetPiece().GetColor() && x - 1 > -1 && y - 1 < 8 && y - 1 > -1 && x - 1 < 8)
                 {
-                    tiles[x, y].SetColor(TileColor.Red);
+                    if (!justCheck)
+                        tiles[x, y].SetColor(TileColor.Red);
                 }
 
             }
@@ -419,7 +482,9 @@ public class Board : MonoBehaviour
         {
             if (tiles[x, y].GetPiece() == null)
             {
-                tiles[x, y].SetColor(TileColor.Green);
+                if (!justCheck)
+                    tiles[x, y].SetColor(TileColor.Green);
+                greenCounter++;
             }
             if (tiles[x, y].GetPiece() != null)
             {
@@ -439,12 +504,21 @@ public class Board : MonoBehaviour
                 }
                 if (tiles[x, y].GetPiece().GetColor() != tiles[i, j].GetPiece().GetColor() && x + 1 > -1 && y - 1 < 8 && y - 1 > -1 && x + 1 < 8)
                 {
-                    tiles[x, y].SetColor(TileColor.Red);
+                    if (!justCheck)
+                        tiles[x, y].SetColor(TileColor.Red);
                 }
 
             }
             x = x + 1;
             y = y - 1;
+        }
+        if(greenCounter == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
   
@@ -454,12 +528,19 @@ public class Board : MonoBehaviour
         {
             turn = PieceColor.Brown;
             uIManager.SwitchTurn(PieceColor.Brown);
-
+            if(IsPlayerPin(PieceColor.Brown))
+            {
+                uIManager.SetWinUI(PieceColor.Brown, true);
+            }
         }
         else if (turn == PieceColor.Brown)
         {
             turn = PieceColor.Cream;
             uIManager.SwitchTurn(PieceColor.Cream);
+            if (IsPlayerPin(PieceColor.Cream))
+            {
+                uIManager.SetWinUI(PieceColor.Cream, true);
+            }
         }
     }
 }

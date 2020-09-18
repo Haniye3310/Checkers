@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,15 +12,28 @@ public class UIManager : MonoBehaviour
     public Image image;
     public Color brownColor;
     public Color creamColor;
-    public void SetWinUI(PieceColor pieceColor) 
+    public void SetWinUI(PieceColor pieceColor, bool isPlayerPin=false) 
     {
+        if (panel.activeInHierarchy) return;
+
         panel.SetActive(true);
+        
         if (pieceColor ==PieceColor.Cream) 
         {
+            if (isPlayerPin) 
+            { 
+                text.text = "Brown Pin! :((";
+                return;
+            }
             text.text = "Cream Win :)";
         }
         if (pieceColor == PieceColor.Brown)
         {
+            if(isPlayerPin)
+            {
+                text.text = "Cream Pin! :((";
+                return;
+            }
             text.text = "Brown Win :)";
         }
     }
@@ -35,6 +49,10 @@ public class UIManager : MonoBehaviour
             image.color = brownColor;
             turnText.text = "Brown Turn !";
         }
+    }
+    public void NewGame_OnClick() 
+    {
+        SceneManager.LoadScene(0);
     }
 
 }
